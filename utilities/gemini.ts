@@ -52,6 +52,7 @@ const genAI = new GoogleGenerativeAI(geminiApiKey);
 
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+// This retrieves the query from user after submit button is clicked
 export const sendQueryToGemini = async (userText: string) => {
   const prompt = `Response to the following text that starts after "GEMINI_QUERY =>" and only that.\nGEMINI_QUERY => ${userText}`;
 
@@ -64,10 +65,13 @@ export const sendQueryToGemini = async (userText: string) => {
         topK: 64,
       },
     });
+    
+    const response = await result.response;
+    const text = await result.response.text();
 
-    const text = result.response.text();
-    console.log(text);
-    return text;
+    const value = JSON.parse(text);
+    console.log(value);
+    return value.response;
   } catch (err) {
     console.error("Some error occurred", err);
     return "";

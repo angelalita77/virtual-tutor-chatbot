@@ -11,7 +11,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   
   const handleButtonClick = async () => {
-    await sendQueryToGemini(text);
+    const res = await sendQueryToGemini(text);
+    console.log(res);
+    setResponse(res);
   };
 
   return (
