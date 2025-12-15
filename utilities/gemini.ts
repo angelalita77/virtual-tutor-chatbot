@@ -42,7 +42,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY; // safer than hardcoding
+const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY2; // safer than hardcoding
 
 if (!geminiApiKey) {
   throw new Error("Gemini API key is not defined");
@@ -54,8 +54,9 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 // This retrieves the query from user after submit button is clicked
 export const sendQueryToGemini = async (userText: string) => {
-  const prompt = `Response to the following text that starts after "GEMINI_QUERY =>" and only that.\nGEMINI_QUERY => ${userText}`;
-
+  const prompt = `You are a helpful tutor. Give concise, brief answers (2-3 sentences maximum).
+        Response to the following text that starts after "GEMINI_QUERY =>" and only that.
+        GEMINI_QUERY => ${userText}`;
   try {
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -63,15 +64,16 @@ export const sendQueryToGemini = async (userText: string) => {
         temperature: 1,
         topP: 0.95,
         topK: 64,
+        maxOutputTokens: 200 //Limit response needed
       },
     });
     
-    const response = await result.response;
+    
     const text = await result.response.text();
 
-    const value = JSON.parse(text);
-    console.log(value);
-    return value.response;
+    // const value = JSON.parse(text);
+    // console.log(value);
+    return text;
   } catch (err) {
     console.error("Some error occurred", err);
     return "";
