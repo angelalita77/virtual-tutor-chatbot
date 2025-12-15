@@ -10,12 +10,21 @@ function App() {
   // State for loading after clicking submit
   const [loading, setLoading] = useState(false);
   
-  const handleButtonClick = async () => {
+    const handleButtonClick = async () => {
     if (!text.trim()) return; // Don't submit empty queries
-    const res = await sendQueryToGemini(text);
-    console.log(res);
-    setResponse(res);
-    setLoading(false);
+    
+    setLoading(true); // ✅ Start loading
+    
+    try {
+      const result = await sendQueryToGemini(text);
+      setResponse(result || 'No response received'); // ✅ Update response
+      setText(''); // ✅ Clear input after successful submission
+    } catch (error) {
+      setResponse('Error: Failed to get response'); // ✅ Handle errors
+      console.error(error);
+    } finally {
+      setLoading(false); // ✅ Stop loading
+    }
   };
 
  return (
