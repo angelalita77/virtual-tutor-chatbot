@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import {sendQueryToGemini} from '../utilities/gemini'
+import { sendQueryToHuggingFace } from '../utilities/huggingface'
 
 function App() {
   // States for the user input
@@ -16,7 +16,7 @@ function App() {
     setLoading(true); // ✅ Start loading
     
     try {
-      const result = await sendQueryToGemini(text);
+      const result = await sendQueryToHuggingFace(text);
       setResponse(result || 'No response received'); // ✅ Update response
       setText(''); // ✅ Clear input after successful submission
     } catch (error) {
