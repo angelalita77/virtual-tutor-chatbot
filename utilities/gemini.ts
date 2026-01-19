@@ -42,7 +42,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY2; // safer than hardcoding
+const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY4; // safer than hardcoding
 
 if (!geminiApiKey) {
   throw new Error("Gemini API key is not defined");
